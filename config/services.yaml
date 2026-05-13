@@ -21,3 +21,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\PaypalService:
+            arguments:
+                $clientId: '%env(PAYPAL_CLIENT_ID)%'
+                $secret:   '%env(PAYPAL_SECRET)%'
+                $mode:     '%env(PAYPAL_MODE)%'
