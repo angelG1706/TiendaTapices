@@ -13,8 +13,6 @@ RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 COPY . .
 
-RUN APP_ENV=prod APP_SECRET=temp php bin/console cache:clear --env=prod --no-debug --no-warmup
-
 EXPOSE 8080
 
 CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
