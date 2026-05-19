@@ -1,7 +1,4 @@
-[phases.setup]
-nixPkgs = ["php85", "composer"]
-
-[phases.build]
+[phases.install]
 cmds = ["composer install --no-dev --optimize-autoloader"]
 
 [start]
