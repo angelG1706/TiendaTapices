@@ -21,4 +21,4 @@ RUN mkdir -p config/jwt && \
 
 EXPOSE 8080
 
-CMD ["php", "-S", "0.0.0.0:8080", "-t", "public"]
+CMD ["sh", "-c", "php bin/console doctrine:migrations:migrate --no-interaction --env=prod && php -S 0.0.0.0:$PORT -t public"]
