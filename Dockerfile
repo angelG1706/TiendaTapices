@@ -9,12 +9,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /app
 
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interaction
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 COPY . .
 
-RUN php bin/console cache:clear --env=prod --no-debug
-RUN php bin/console assets:install public --env=prod
+RUN APP_ENV=prod APP_SECRET=temp php bin/console cache:clear --env=prod --no-debug --no-warmup
 
 EXPOSE 8080
 
