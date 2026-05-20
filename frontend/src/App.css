@@ -605,6 +605,7 @@ footer { background: #1a0f08; color: #7a5c44; padding: 2.5rem 0; border-top: 1px
   .nav-auth-buttons .btn-nav-login,
   .nav-auth-buttons .btn-nav-register,
   .nav-auth-buttons .btn-nav-logout,
+  .nav-auth-buttons .cart-nav-btn,
   .nav-user-name { display: none; }
 
   .navbar-inner { padding: 0 1rem; }
