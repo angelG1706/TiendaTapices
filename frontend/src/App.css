@@ -593,3 +593,82 @@ footer { background: #1a0f08; color: #7a5c44; padding: 2.5rem 0; border-top: 1px
 .form-wrap-ok { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 280px; }
 .form-ok-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(107,140,107,.15); border: 2px solid #6b8c6b; color: #6b8c6b; font-size: 1.6rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
 .form-input:disabled, .form-select:disabled, .form-textarea:disabled { opacity: .6; cursor: not-allowed; }
+
+/* ── RESPONSIVE MÓVIL ── */
+@media (max-width: 768px) {
+
+  /* NAVBAR */
+  .nav-links { display: none; }
+  .nav-auth-buttons .btn-nav-login,
+  .nav-auth-buttons .btn-nav-register,
+  .nav-auth-buttons .btn-nav-logout,
+  .nav-user-name { display: none; }
+
+  .navbar-inner { padding: 0 1rem; }
+  .brand-name { font-size: 1.1rem; }
+  .brand-sub { font-size: .55rem; }
+
+  /* HERO */
+  .hero-container {
+    flex-direction: column-reverse;
+    padding: 80px 1rem 3rem;
+    min-height: auto;
+    gap: 1.5rem;
+  }
+
+  .hero-img-col {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-img-frame {
+    aspect-ratio: 16/9;
+    border-radius: var(--radius);
+  }
+
+  .hero-badge {
+    writing-mode: horizontal-tb;
+    top: auto;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: .6rem;
+  }
+
+  .hero-title { font-size: 2.2rem; }
+
+  .hero-stats { gap: 1.5rem; }
+
+  .hero-stat-number { font-size: 1.8rem; }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-buttons .btn-terracota,
+  .hero-buttons .btn-outline-terracota {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* GRID DE OBRAS */
+  .obras-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+  }
+
+  /* MODAL */
+  .modal-content { max-width: 100%; margin: 0; border-radius: 0; }
+  .modal-body { flex-direction: column; }
+  .modal-img-wrap { width: 100%; aspect-ratio: 16/9; }
+
+  /* OFFCANVAS CARRITO */
+  .offcanvas { width: 100%; }
+
+  /* FOOTER */
+  .footer-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .footer-uv { text-align: center; }
+}
