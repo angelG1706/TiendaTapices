@@ -58,52 +58,51 @@ export default function PanelAdmin() {
         </div>
 
         <nav className="sidebar-nav">
-          <p className="sidebar-seccion-titulo">Principal</p>
-          <NavLink vista="dashboard" actual={vista} onNavegar={setVista} icono={
-            <svg className="sidebar-icono" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          }>Dashboard</NavLink>
+    <p className="sidebar-seccion-titulo">Principal</p>
+    <NavLink vista="dashboard" actual={vista} onNavegar={setVista} onCerrar={() => setMovilAbierto(false)} icono={
+      <svg className="sidebar-icono" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    }>Dashboard</NavLink>
 
-          <hr className="sidebar-divisor" />
-          <p className="sidebar-seccion-titulo">Catálogo</p>
-          <NavLink vista="obras" actual={vista} onNavegar={setVista} icono={
-            <svg className="sidebar-icono" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-          }>Gestión de Obras</NavLink>
-          <NavLink vista="colecciones" actual={vista} onNavegar={setVista} icono={
-            <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
-          }>Colecciones</NavLink>
-          <NavLink vista="imagenes" actual={vista} onNavegar={setVista} icono={
-            <svg className="sidebar-icono" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          }>Imágenes del Sitio</NavLink>
+    <hr className="sidebar-divisor" />
+    <p className="sidebar-seccion-titulo">Catálogo</p>
+    <NavLink vista="obras" actual={vista} onNavegar={setVista} onCerrar={() => setMovilAbierto(false)} icono={
+      <svg className="sidebar-icono" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+    }>Gestión de Obras</NavLink>
+    <NavLink vista="colecciones" actual={vista} onNavegar={setVista} onCerrar={() => setMovilAbierto(false)} icono={
+      <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+    }>Colecciones</NavLink>
+    <NavLink vista="imagenes" actual={vista} onNavegar={setVista} onCerrar={() => setMovilAbierto(false)} icono={
+      <svg className="sidebar-icono" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+    }>Imágenes del Sitio</NavLink>
 
-          <hr className="sidebar-divisor" />
-          <p className="sidebar-seccion-titulo">Ventas</p>
-          <NavLink vista="pedidos" actual={vista} onNavegar={setVista} icono={
-            <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          }>Pedidos</NavLink>
+    <hr className="sidebar-divisor" />
+    <p className="sidebar-seccion-titulo">Ventas</p>
+    <NavLink vista="pedidos" actual={vista} onNavegar={setVista} onCerrar={() => setMovilAbierto(false)} icono={
+      <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    }>Pedidos</NavLink>
 
+    <hr className="sidebar-divisor" />
+    <p className="sidebar-seccion-titulo">Sistema</p>
+    <NavLink vista="usuarios" actual={vista} onNavegar={setVista} onCerrar={() => setMovilAbierto(false)} icono={
+      <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    }>Usuarios</NavLink>
+    <a className="sidebar-link" href="/" onClick={() => setMovilAbierto(false)}>
+      <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span className="sidebar-texto">Volver al sitio</span>
+    </a>
+  </nav>
 
-          <hr className="sidebar-divisor" />
-          <p className="sidebar-seccion-titulo">Sistema</p>
-          <NavLink vista="usuarios" actual={vista} onNavegar={setVista} icono={
-            <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          }>Usuarios</NavLink>
-          <a className="sidebar-link" href="/">
-            <svg className="sidebar-icono" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            <span className="sidebar-texto">Volver al sitio</span>
-          </a>
-        </nav>
-
-        <div className="sidebar-footer">
-          <div className="sidebar-avatar">{inicial}</div>
-          <div className="sidebar-footer-info sidebar-texto">
-            <p className="sidebar-footer-nombre">{usuario?.nombre || 'Admin'}</p>
-            <p className="sidebar-footer-rol">ROLE_ADMIN</p>
-          </div>
-          <button className="sidebar-btn-logout" onClick={logout} title="Cerrar sesión">
-            <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          </button>
-        </div>
-      </aside>
+  <div className="sidebar-footer">
+    <div className="sidebar-avatar">{inicial}</div>
+    <div className="sidebar-footer-info sidebar-texto">
+      <p className="sidebar-footer-nombre">{usuario?.nombre || 'Admin'}</p>
+      <p className="sidebar-footer-rol">ROLE_ADMIN</p>
+    </div>
+    <button className="sidebar-btn-logout" onClick={logout} title="Cerrar sesión">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+    </button>
+  </div>
+  </aside>
 
       {movilAbierto && (
         <div className="sidebar-overlay" onClick={() => setMovilAbierto(false)} />
@@ -155,9 +154,12 @@ export default function PanelAdmin() {
 }
 
 // ── COMPONENTE NAVLINK ───────────────────────────────────────
-function NavLink({ vista, actual, onNavegar, icono, children }) {
+function NavLink({ vista, actual, onNavegar, icono, children, onCerrar }) {
   return (
-    <button className={`sidebar-link ${actual === vista ? 'activo' : ''}`} onClick={() => onNavegar(vista)}>
+    <button className={`sidebar-link ${actual === vista ? 'activo' : ''}`} onClick={() => {
+      onNavegar(vista);
+      if (onCerrar) onCerrar();
+    }}>
       {icono}
       <span className="sidebar-texto">{children}</span>
     </button>
