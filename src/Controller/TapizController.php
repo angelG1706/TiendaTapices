@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Tapiz;
 use App\Entity\Coleccion;
+use Cloudinary\Cloudinary;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
 class TapizController extends AbstractController
-{    
+{
+    private function uploadToCloudinary($archivo): string
+    {
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => $_ENV['CLOUDINARY_CLOUD_NAME'],
+                'api_key'    => $_ENV['CLOUDINARY_API_KEY'],
+                'api_secret' => $_ENV['CLOUDINARY_API_SECRET'],
+            ],
+        ]);
+        $result = $cloudinary->uploadApi()->upload($archivo->getPathname(), [
+            'folder' => 'tapices'
+        ]);
+        return $result['secure_url'];
+    }
+
     #[Route('/api/tapices', name: 'api_tapices_listar', methods: ['GET'])]
     public function listar(EntityManagerInterface $em): JsonResponse
     {
@@ -39,32 +55,29 @@ class TapizController extends AbstractController
     public function ver(int $id, EntityManagerInterface $em): JsonResponse
     {
         $tapiz = $em->getRepository(Tapiz::class)->find($id);
-
         if (!$tapiz) {
             return $this->json(['error' => 'Tapiz no encontrado'], 404);
         }
-
         return $this->json([
-            'id' => $tapiz->getId(),
-            'titulo' => $tapiz->getTitulo(),
-            'precio' => $tapiz->getPrecio(),
-            'stock' => $tapiz->getStock(),
-            'tecnica' => $tapiz->getTecnica(),
-            'medidas' => $tapiz->getMedidas(),
-            'materiales' => $tapiz->getMateriales(),
-            'fecha_elaboracion' => $tapiz->getFechaElaboracion()?->format('Y-m-d'),
-            'lugar_elaboracion' => $tapiz->getLugarElaboracion(),
-            'descripcion' => $tapiz->getDescripcion(),
-            'disponible' => $tapiz->isDisponible(),
-            'coleccion' => $tapiz->getColeccion()?->getNombre(),
-            'imagen' => $tapiz->getImagen(),
+            'id'               => $tapiz->getId(),
+            'titulo'           => $tapiz->getTitulo(),
+            'precio'           => $tapiz->getPrecio(),
+            'stock'            => $tapiz->getStock(),
+            'tecnica'          => $tapiz->getTecnica(),
+            'medidas'          => $tapiz->getMedidas(),
+            'materiales'       => $tapiz->getMateriales(),
+            'fecha_elaboracion'=> $tapiz->getFechaElaboracion()?->format('Y-m-d'),
+            'lugar_elaboracion'=> $tapiz->getLugarElaboracion(),
+            'descripcion'      => $tapiz->getDescripcion(),
+            'disponible'       => $tapiz->isDisponible(),
+            'coleccion'        => $tapiz->getColeccion()?->getNombre(),
+            'imagen'           => $tapiz->getImagen(),
         ]);
     }
 
     #[Route('/api/tapices', name: 'api_tapices_crear', methods: ['POST'])]
     public function crear(Request $request, EntityManagerInterface $em): JsonResponse
     {
-        // Soporta tanto JSON como multipart/form-data
         $datos = $request->getContentTypeFormat() === 'json'
             ? json_decode($request->getContent(), true)
             : $request->request->all();
@@ -86,8 +99,8 @@ class TapizController extends AbstractController
         $tapiz->setMedidas($datos['medidas']);
         $tapiz->setColeccion($coleccion);
         $tapiz->setDisponible(
-            ($datos['disponible'] ?? true) === true 
-            || ($datos['disponible'] ?? true) === '1' 
+            ($datos['disponible'] ?? true) === true
+            || ($datos['disponible'] ?? true) === '1'
             || ($datos['disponible'] ?? true) === 1
         );
         $tapiz->setFechaCreacion(new \DateTime());
@@ -99,17 +112,13 @@ class TapizController extends AbstractController
             $tapiz->setFechaElaboracion(new \DateTime($datos['fecha_elaboracion']));
         }
 
-        // Imagen por URL
         if (!empty($datos['imagen_url'])) {
             $tapiz->setImagen($datos['imagen_url']);
         }
 
-        // Imagen por archivo local
         $archivo = $request->files->get('imagen');
         if ($archivo) {
-            $nombreArchivo = uniqid() . '.' . $archivo->guessExtension();
-            $archivo->move($this->getParameter('kernel.project_dir') . '/public/uploads/tapices/', $nombreArchivo);
-            $tapiz->setImagen('/uploads/tapices/' . $nombreArchivo);
+            $tapiz->setImagen($this->uploadToCloudinary($archivo));
         }
 
         $em->persist($tapiz);
@@ -130,37 +139,33 @@ class TapizController extends AbstractController
             ? json_decode($request->getContent(), true)
             : $request->request->all();
 
-        if (isset($datos['titulo']))      $tapiz->setTitulo($datos['titulo']);
-        if (isset($datos['precio']))      $tapiz->setPrecio($datos['precio']);
-        if (isset($datos['stock']))       $tapiz->setStock($datos['stock']);
-        if (isset($datos['tecnica']))     $tapiz->setTecnica($datos['tecnica']);
-        if (isset($datos['medidas']))     $tapiz->setMedidas($datos['medidas']);
+        if (isset($datos['titulo']))     $tapiz->setTitulo($datos['titulo']);
+        if (isset($datos['precio']))     $tapiz->setPrecio($datos['precio']);
+        if (isset($datos['stock']))      $tapiz->setStock($datos['stock']);
+        if (isset($datos['tecnica']))    $tapiz->setTecnica($datos['tecnica']);
+        if (isset($datos['medidas']))    $tapiz->setMedidas($datos['medidas']);
         if (isset($datos['disponible'])) {
             $tapiz->setDisponible(
                 $datos['disponible'] === true || $datos['disponible'] === '1' || $datos['disponible'] === 1
             );
         }
-        if (array_key_exists('materiales', $datos))         $tapiz->setMateriales($datos['materiales']);
-        if (array_key_exists('descripcion', $datos))        $tapiz->setDescripcion($datos['descripcion']);
-        if (array_key_exists('lugar_elaboracion', $datos))  $tapiz->setLugarElaboracion($datos['lugar_elaboracion']);
-        if (isset($datos['fecha_elaboracion']))             $tapiz->setFechaElaboracion(new \DateTime($datos['fecha_elaboracion']));
+        if (array_key_exists('materiales', $datos))        $tapiz->setMateriales($datos['materiales']);
+        if (array_key_exists('descripcion', $datos))       $tapiz->setDescripcion($datos['descripcion']);
+        if (array_key_exists('lugar_elaboracion', $datos)) $tapiz->setLugarElaboracion($datos['lugar_elaboracion']);
+        if (isset($datos['fecha_elaboracion']))            $tapiz->setFechaElaboracion(new \DateTime($datos['fecha_elaboracion']));
 
         if (isset($datos['coleccion_id'])) {
             $coleccion = $em->getRepository(\App\Entity\Coleccion::class)->find($datos['coleccion_id']);
             if ($coleccion) $tapiz->setColeccion($coleccion);
         }
 
-        // Imagen por URL
         if (!empty($datos['imagen_url'])) {
             $tapiz->setImagen($datos['imagen_url']);
         }
 
-        // Imagen por archivo local
         $archivo = $request->files->get('imagen');
         if ($archivo) {
-            $nombreArchivo = uniqid() . '.' . $archivo->guessExtension();
-            $archivo->move($this->getParameter('kernel.project_dir') . '/public/uploads/tapices/', $nombreArchivo);
-            $tapiz->setImagen('/uploads/tapices/' . $nombreArchivo);
+            $tapiz->setImagen($this->uploadToCloudinary($archivo));
         }
 
         $em->flush();
@@ -171,14 +176,11 @@ class TapizController extends AbstractController
     public function eliminar(int $id, EntityManagerInterface $em): JsonResponse
     {
         $tapiz = $em->getRepository(Tapiz::class)->find($id);
-
         if (!$tapiz) {
             return $this->json(['error' => 'Tapiz no encontrado'], 404);
         }
-
         $em->remove($tapiz);
         $em->flush();
-
         return $this->json(['mensaje' => 'Tapiz eliminado correctamente']);
     }
 }
