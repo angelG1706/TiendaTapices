@@ -17,6 +17,7 @@ export default function PanelAdmin() {
   const { usuario, logout } = useTienda();
   const [colapsado, setColapsado] = useState(false);
   const [vista, setVista] = useState('dashboard');
+  const [movilAbierto, setMovilAbierto] = useState(false);
   const [toast, setToast] = useState({ visible: false, mensaje: '' });
 
   const mostrarToast = useCallback((mensaje) => {
@@ -27,7 +28,7 @@ export default function PanelAdmin() {
   const inicial = usuario?.nombre?.charAt(0)?.toUpperCase() || 'A';
 
   return (
-    <div className={`panel-root ${colapsado ? 'colapsado' : ''}`}>
+    <div className={`panel-root ${colapsado ? 'colapsado' : ''} ${movilAbierto ? 'movil-abierto' : ''}`}>
 
       {/* ── SIDEBAR ── */}
       <aside className="sidebar">
@@ -98,23 +99,34 @@ export default function PanelAdmin() {
         </div>
       </aside>
 
+      {movilAbierto && (
+        <div className="sidebar-overlay" onClick={() => setMovilAbierto(false)} />
+      )}
+
       {/* ── ÁREA PRINCIPAL ── */}
       <div className="panel-main">
-        <header className="topbar">
-          <div>
-            <p className="topbar-titulo">{VISTAS[vista].titulo}</p>
-            <p className="topbar-subtitulo">{VISTAS[vista].subtitulo}</p>
-          </div>
-          <div className="topbar-espaciador" />
-          <button className="topbar-btn-notif">
-            <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            <span className="topbar-notif-punto" />
-          </button>
-          <div className="topbar-perfil">
-            <div className="topbar-avatar">{inicial}</div>
-            <span className="topbar-nombre">{usuario?.nombre || 'Admin'}</span>
-          </div>
-        </header>
+      <header className="topbar">
+        <button className="topbar-hamburger" onClick={() => setMovilAbierto(!movilAbierto)}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+        </button>
+        <div>
+          <p className="topbar-titulo">{VISTAS[vista].titulo}</p>
+          <p className="topbar-subtitulo">{VISTAS[vista].subtitulo}</p>
+        </div>
+        <div className="topbar-espaciador" />
+        <button className="topbar-btn-notif">
+          <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span className="topbar-notif-punto" />
+        </button>
+        <div className="topbar-perfil">
+          <div className="topbar-avatar">{inicial}</div>
+          <span className="topbar-nombre">{usuario?.nombre || 'Admin'}</span>
+        </div>
+      </header>
 
         <main className="panel-contenido">
           {vista === 'dashboard'   && <VistaDashboard />}
