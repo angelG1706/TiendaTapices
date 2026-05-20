@@ -494,3 +494,38 @@
     z-index: 199;
   }
 }
+
+/* ── FIX MÓVIL ── */
+@media (max-width: 768px) {
+  /* Ocultar sidebar completamente cuando está cerrado */
+  .sidebar {
+    transform: translateX(-100%) !important;
+    width: var(--sidebar-ancho) !important;
+  }
+  
+  .panel-root.movil-abierto .sidebar {
+    transform: translateX(0) !important;
+  }
+
+  /* Scroll horizontal en tablas */
+  .tabla-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Topbar subtitulo en una línea */
+  .topbar {
+    flex-wrap: nowrap;
+  }
+  
+  .topbar > div:first-of-type {
+    min-width: 0;
+    overflow: hidden;
+  }
+  
+  .topbar-subtitulo {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
