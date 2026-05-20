@@ -42,7 +42,13 @@ export default function PanelAdmin() {
               </div>
             </>
           )}
-          <button className="sidebar-btn-colapsar" onClick={() => setColapsado(!colapsado)}>
+          <button className="sidebar-btn-colapsar" onClick={() => {
+              if (window.innerWidth <= 768) {
+                setMovilAbierto(false);
+              } else {
+                setColapsado(!colapsado);
+              }
+            }}>
             <svg viewBox="0 0 24 24">
               <line x1="3" y1="6" x2="21" y2="6"/>
               <line x1="3" y1="12" x2="21" y2="12"/>
